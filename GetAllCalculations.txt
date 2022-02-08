@@ -1,0 +1,97 @@
+//--------------------------------------------------------------------------------------------------------------
+        [HttpPost("[action]/{intPkProduct}")]
+        public IActionResult GetAllCalculations(
+        //                                              //PURPOSE:
+        //                                              //Get all calculations
+
+        //                                              //URL: http://localhost/odyssey/Calculation
+        //                                              //     GetAllCalculations
+        //                                              //Method: POST.
+        //                                              //Use a JSON like this:
+        //                                              //      {
+        //                                              //          
+        //                                              //      }
+
+        //                                              //DESCRIPTION:
+        //                                              //Get all calculations
+
+        //                                              //RETURNS:
+        //                                              //      200 - Ok().
+
+        //                                              //Receive the JobId.
+        int intPkProduct
+        )
+        {
+            IActionResult aresult = BadRequest("Invalid request");
+
+            if (
+                //                                          //Verify the pk product
+                intPkProduct >= 0
+                )
+            {
+                ProdtemProductTemplate et = (ProdtemProductTemplate)EtElementTemplateAbstract.etFromDB(intPkProduct);
+                List<CaljsonCalculationJson> darrcaljson = new List<CaljsonCalculationJson>();
+
+                if (et != null)
+                {
+                    //                                      //Get all calcuation of a product
+                    Dictionary<int, CalCalculation> diccal = et.diccal;
+
+           
+                    //                                      //Create the json to send a the front
+                    foreach (KeyValuePair<int, CalCalculation> cal in diccal)
+                    {
+                        CaljsonCalculationJson caljson = new CaljsonCalculationJson();
+                        caljson.intPK = cal.Value.intPk;
+                        caljson.intMinAmmount = (int)cal.Value.intMinAmmount;
+                        caljson.intMaxAmmount = (int)cal.Value.intMaxAmmount;
+                        caljson.numCostBase = cal.Value.numCostBase;
+                        caljson.numCostPerUnit = cal.Value.numCostPerUnit;
+                        caljson.strDefaultValue = cal.Value.strDefaultValue;
+                        caljson.intAttributeBelongsTo = cal.Value.intAttributeBelongsTo;
+                        caljson.intProductTemplateBelongsTo = cal.Value.intProductTemplateBelongsTo;
+                        caljson.intProcessTemplateBelongsTo = (int)cal.Value.intProcessTemplateBelongsTo;
+                        caljson.inrResoourceTemplateBelongsTo = (int)cal.Value.intResourceTemplateBelongsTo;
+
+                        darrcaljson.Add(caljson);
+                    }
+                }
+
+
+            }
+
+            return aresult;
+        }
+        //--------------------------------------------------------------------------------------------------------------
+
+clase json .......................
+
+/*TASK RP.JDF*/
+using Newtonsoft.Json;
+using System;
+
+//                                                          //AUTHOR: Towa (AQG - Andrea Quiroz).
+//                                                          //CO-AUTHOR: Towa (LGF - Liliana Gutierrez).
+//                                                          //DATE: November 28, 2019. 
+
+namespace Odyssey2Backend.JsonTemplates
+{
+    //=================================================================================================================  
+    public class CaljsonCalculationJson
+    {
+        public int intPK { get; set; }
+        public int intMinAmmount { get; set; }
+        public int intMaxAmmount { get; set; }
+        public double numCostBase { get; set; }
+        public double numCostPerUnit { get; set; }
+        public String strDefaultValue { get; set; }
+        public int intAttributeBelongsTo { get; set; }
+        public int intProductTemplateBelongsTo { get; set; }
+        public int intProcessTemplateBelongsTo { get; set; }
+        public int inrResoourceTemplateBelongsTo { get; set; }
+    }
+
+    //==================================================================================================================
+}
+/*END-TASK*/
+
