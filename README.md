@@ -1,4 +1,4 @@
 # hola-mundo
-Mi primer repositorio con Innovacion Virtual
+Mi primer repositorio.
 
 Autor: Cesar Luilly
